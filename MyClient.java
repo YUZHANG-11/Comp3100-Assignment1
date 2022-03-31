@@ -79,6 +79,14 @@ public class MyClient {
             client.sendMessage("REDY");
             client.sendMessage("GETS All");
             String servers = client.sendMessage("OK");
+            List<ServerNode> nodeList = client.getServerList(servers);
+            ServerNode biggestCoreNode = null;
+            for (ServerNode node : nodeList) {
+                if (biggestCoreNode == null || node.getCore() > biggestCoreNode.getCore()) {
+                    biggestCoreNode = node;
+                }
+            }
+            System.out.println("\nBiggest Core Node: " + biggestCoreNode + "\n");
             client.sendMessage("OK");
             client.sendMessage("QUIT");
             client.close();
