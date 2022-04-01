@@ -79,14 +79,14 @@ public class MyClient {
         client.sendMessage("GETS All"); // achieve all server nodes
         String servers = client.sendMessage("OK");
         List<ServerNode> nodeList = client.getServerList(servers);
-        List<ServerNode> biggestCoreNodeList = new ArrayList<>();
+        List<ServerNode> biggestCoreNodeList = new ArrayList<>(); // create biggestCoreNodeList to save the biggest core node
         for (ServerNode node : nodeList) {
             if (biggestCoreNodeList.isEmpty() || (biggestCoreNodeList.get(0).getCore() == node.getCore()
-                    && biggestCoreNodeList.get(0).getServerType().equals(node.getServerType()))) {
-                biggestCoreNodeList.add(node);
-            } else if (biggestCoreNodeList.get(0).getCore() < node.getCore()) {
-                biggestCoreNodeList.clear();
-                biggestCoreNodeList.add(node);
+                    && biggestCoreNodeList.get(0).getServerType().equals(node.getServerType()))) { // if there is no node or core is equal and type is equal
+                biggestCoreNodeList.add(node); // just add inside not change the node
+            } else if (biggestCoreNodeList.get(0).getCore() < node.getCore()) { // if next node's core is bigger than before
+                biggestCoreNodeList.clear(); // clear the biggestCoreNodeList
+                biggestCoreNodeList.add(node); // add new one
             }
         }
         client.sendMessage("OK");
@@ -96,10 +96,10 @@ public class MyClient {
                 Job job = client.getJobFromString(jobStr);
                 client.sendMessage("SCHD " + job.getJobID() + " " + biggestCoreNodeList.get(round).getServerType() + " "
                         + biggestCoreNodeList.get(round).getServerID());
-                if (round < biggestCoreNodeList.size() - 1) {
+                if (round < biggestCoreNodeList.size() - 1) { // like for loop's i
                     round++;
                 } else {
-                    round = 0;
+                    round = 0; // clear to prepare next round
                 }
             }
             jobStr = client.sendMessage("REDY");
