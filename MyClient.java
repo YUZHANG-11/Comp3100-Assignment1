@@ -79,18 +79,27 @@ public class MyClient {
         client.sendMessage("GETS All"); // achieve all server nodes
         String servers = client.sendMessage("OK");
         List<ServerNode> nodeList = client.getServerList(servers);
-        ServerNode biggestCoreNode = null;
+        List<ServerNode> biggestCoreNodeList = new ArrayList<>();
         for (ServerNode node : nodeList) {
-            if (biggestCoreNode == null || node.getCore() > biggestCoreNode.getCore()) { // compare the cores of each single node to find the largest
-                biggestCoreNode = node;
+            if (biggestCoreNodeList.isEmpty() || (biggestCoreNodeList.get(0).getCore() == node.getCore())) {
+                biggestCoreNodeList.add(node);
+            } else if (biggestCoreNodeList.get(0).getCore() < node.getCore()) {
+                biggestCoreNodeList.clear();
+                biggestCoreNodeList.add(node);
             }
         }
-        System.out.println("\nBiggest Core Node: " + biggestCoreNode + "\n"); // print out the largest core node
         client.sendMessage("OK");
+        int round = 0;
         while (!jobStr.equals("NONE\n")) {
             if (jobStr.startsWith("JOBN")) {
                 Job job = client.getJobFromString(jobStr);
-                client.sendMessage("SCHD " + job.getJobID() + " " + biggestCoreNode.getServerType() + " " + biggestCoreNode.getServerID());
+                client.sendMessage("SCHD " + job.getJobID() + " " + biggestCoreNodeList.get(round).getServerType() + " "
+                        + biggestCoreNodeList.get(round).getServerID());
+                if (round < biggestCoreNodeList.size() - 1) {
+                    round++;
+                } else {
+                    round = 0;
+                }
             }
             jobStr = client.sendMessage("REDY");
         }
@@ -109,6 +118,7 @@ public class MyClient {
         job.setDisk(Integer.parseInt(elements[6].replace("\n", ""))); // Remove the last newline to prevent no conversion
         return job;
     }
+
 
     public class Job {
         private int submitTime;
