@@ -81,7 +81,8 @@ public class MyClient {
         List<ServerNode> nodeList = client.getServerList(servers);
         List<ServerNode> biggestCoreNodeList = new ArrayList<>();
         for (ServerNode node : nodeList) {
-            if (biggestCoreNodeList.isEmpty() || (biggestCoreNodeList.get(0).getCore() == node.getCore())) {
+            if (biggestCoreNodeList.isEmpty() || (biggestCoreNodeList.get(0).getCore() == node.getCore()
+                    && biggestCoreNodeList.get(0).getServerType().equals(node.getServerType()))) {
                 biggestCoreNodeList.add(node);
             } else if (biggestCoreNodeList.get(0).getCore() < node.getCore()) {
                 biggestCoreNodeList.clear();
