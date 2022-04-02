@@ -1,1 +1,2 @@
-The client and server are successfully established. Complete the preliminary exchanges such as "HELO", "READ" and "Close".
+Student Name: Yu ZHang
+Student ID: 45675058
