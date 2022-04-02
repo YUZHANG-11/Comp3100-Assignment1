@@ -1,2 +1,2 @@
-Student Name: Yu ZHang
+Student Name: Yu Zhang
 Student ID: 45675058
